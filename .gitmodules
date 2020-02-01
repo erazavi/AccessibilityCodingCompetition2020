@@ -1,0 +1,2 @@
+[submodule "DeepSpeech"]
+	url = https://github.com/mozilla/DeepSpeech
