@@ -1,6 +1,6 @@
-var Discord = require('discord.io');
-var logger = require('winston');
-var auth = require('./auth.json');
+const Discord = require('discord.io');
+const logger = require('winston');
+const auth = require('./auth.json');
 //const client = new Discord.Client();
 
 // Configure logger settings
@@ -19,6 +19,24 @@ bot.on('ready', function (evt) {
     logger.info('Logged in as: ');
     logger.info(bot.username + ' - (' + bot.id + ')');
 });
+bot.on('voiceStateUpdate', function(oldMember, newMember){
+    bot.joinVoiceChannel("673003771160166438"); //this works
+    let newUserChannel = undefined;//newMember.voiceChannel; //cannot get newmember to be defined
+    let oldUserChannel = oldMember.voiceChannel;
+  
+  
+    if(oldUserChannel === undefined && newUserChannel !== undefined) {
+       // bot.joinVoiceChannel("673003771160166438");
+       // User Joins a voice channel
+  
+    } else if(newUserChannel == undefined){
+  //bot.leaveVoiceChannel("673003771160166438"); //this works but its broken if I hardcode newmember to be undefined
+      // User leaves a voice channel
+    }
+  
+
+    //bot.joinVoiceChannel(voiceChannelID);
+  })
 bot.on("message", function (user, userID, channelID, message, evt) {
     // Our bot needs to know if it will execute a command
     // It will listen for messages that will start with `!`
@@ -32,12 +50,17 @@ bot.on("message", function (user, userID, channelID, message, evt) {
             case 'ping':
                 bot.sendMessage({
                     to: channelID,
-                    message: 'Pong!'
-		    
+                    message: 'Pong!',
+                    tts: true
                 });
             break;
 	        case 'plink':
-		        MessageChannel.send(channelID);
+		        bot.sendMessage({
+                    to:channelID,
+                    message: "Plonk",
+                    tts: true
+                })
+                bot.joinVoiceChannel(channelID);
             break;
 	// Just add any case commands if you want to..
          }
