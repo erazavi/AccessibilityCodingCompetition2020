@@ -52,5 +52,5 @@ Type !help in the Discord chat to get bot help commands.
 - Make it accessible for all servers.
 - Possibly creating a text log.
 - Testing it further in groups with hard of hearing users.
-- Reimplement the follow and Voice Channel Join/Leave function
+- Reimplement the follow and Voice Channel Join/Leave Notification functions
 ```
