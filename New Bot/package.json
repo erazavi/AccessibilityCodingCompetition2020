@@ -10,6 +10,7 @@
     "@google-cloud/speech": "^2.3.1",
     "discord.js": "https://github.com/discordjs/discord.js.git#123713305ad5a6aa1e5205a53713494009740aef",
     "dotenv": "^8.2.0",
+    "google-auth-library": "^5.9.2",
     "node-opus": "^0.3.1"
   },
   "license": "ISC"

@@ -67,9 +67,11 @@ if (msg.content === "!join"){
       sampleRateHertz: 48000,
       languageCode: 'en-US'
     }
+    
     const request = {
       config: requestConfig
     }
+
     const recognizeStream = googleSpeechClient
       .streamingRecognize(request)
       .on('error', console.error)
