@@ -1,0 +1,7 @@
+#Output results into a file.
+node index.js > log_file.txt
+
+#Git command to unstage previously commited files.
+$ git rm --cached DeepSpeech -f
+$ git rm -r --cached models
+
