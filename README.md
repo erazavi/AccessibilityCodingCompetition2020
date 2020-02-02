@@ -29,6 +29,11 @@ To have the bot listen to you and/or send you transcribed text type: !opt in
 To make the bot stop listening to you and send you transcribed text type: !opt out
 ```
 
+# Help:
+```
+Type !help in the Discord chat to get bot help commands.
+```
+
 # Testing, functionality, and user experience:
 ```
 The bot's functionality has been fully tested out with a hard of hearing user.
