@@ -1,0 +1,16 @@
+{
+  "name": "myawesomebot",
+  "version": "1.0.0",
+  "description": "Discord bot with speech recognition",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "@google-cloud/speech": "^2.3.1",
+    "discord.js": "https://github.com/discordjs/discord.js.git#123713305ad5a6aa1e5205a53713494009740aef",
+    "dotenv": "^8.2.0",
+    "node-opus": "^0.3.1"
+  },
+  "license": "ISC"
+}
