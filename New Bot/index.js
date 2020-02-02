@@ -1,6 +1,7 @@
 require('dotenv').config()
 const Discord = require('discord.js')
 const config = require('./config')
+const { RichEmbed } = require('discord.js');
 
 const discordClient = new Discord.Client()
 
@@ -8,7 +9,10 @@ const { Readable } = require('stream');
 
 const SILENCE_FRAME = Buffer.from([0xF8, 0xFF, 0xFE]);
 
+//global bot variables
 var optin = {};
+var currentChannelName = '';
+
 
 class Silence extends Readable {
   _read() {
@@ -53,6 +57,7 @@ if (msg.content === "!join"){
   }
 
   const connection = await memberVoiceChannel.join()
+  currentChannelName = memberVoiceChannel.name;
   const receiver = connection.receiver
   connection.play(new Silence(), { type: 'opus' });
   connection.on('speaking', (user, speaking) => {
@@ -79,9 +84,14 @@ if (msg.content === "!join"){
         const transcription = response.results
           .map(result => result.alternatives[0].transcript)
           .join('\n')
-          .toLowerCase()
-        Object.keys(optin).forEach(u => discordClient.users.get(u).send(`${user.username}: ${transcription}`));
-        console.log(`${user.username}: ${transcription}`)
+          .toLowerCase();
+
+
+        currentChannelName = connection.channel.name;
+        Object.keys(optin).forEach(u => discordClient.users.get(u).send(createEmbedFromUserTranscript(user, transcription)));
+        
+        console.log(`${user.username}: ${transcription}`);
+
       })
 
     const convertTo1ChannelStream = new ConvertTo1ChannelStream()
@@ -107,9 +117,20 @@ else if(msg.content === "!opt out"){
 
 })
 
+
+function createEmbedFromUserTranscript(user, transcription){
+  var embed = new Discord.MessageEmbed()
+	.setColor('#0099ff')
+  .setFooter('Transcription from #' + currentChannelName)
+  .setDescription(transcription)
+  .setTimestamp();
+  discordClient.users.fetch(user.id).then(myUser => {embed.setAuthor(`${myUser.username}`, myUser.avatarURL())});
+  return embed;
+}
+
+
 discordClient.on('ready', () => {
   console.log(`Logged in as ${discordClient.user.tag}!`)
 })
-
 
 discordClient.login(config.discordApiToken)
