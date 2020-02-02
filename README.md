@@ -18,36 +18,36 @@ Created a Discord bot that transcribes speech from voice channels to text for ha
 
 ## This project utilizes the following resources:
 ```
-* Discord API - Discord.js
-* Google Cloud Speech-to-Text API.
+- Discord API - Discord.js
+- Google Cloud Speech-to-Text API.
 ```
 
 # How to use:
 ```
-* Get invited into the Discord server.
-* To have the bot listen to you and/or send you transcribed text type: !opt in
-* To make the bot stop listening to you and send you transcribed text type: !opt out
+- Get invited into the Discord server.
+- To have the bot listen to you and/or send you transcribed text type: !opt in
+- To make the bot stop listening to you and send you transcribed text type: !opt out
 (You will be greeted in sign language).
 ```
 
 # Help:
 ```
-*Type !help in the Discord chat to get bot help commands.
+Type !help in the Discord chat to get bot help commands.
 ```
 
 # Testing, functionality, and user experience:
 ```
-* The bot's functionality has been fully tested out with a hard of hearing user.
-* The user confirmed functionality and results.
-* The user was satisfied with the overall experience.
+- The bot's functionality has been fully tested out with a hard of hearing user.
+- The user confirmed functionality and results.
+- The user was satisfied with the overall experience.
 ```
 
 # Future Work:
 ```
-* Add Speech to ASL feature.
-* Discord/Google overlay.
-* Send responses in multiple channels inside the bot.
-* Make it accessible for all servers.
-* Possibly creating a text log.
-* Testing it further in groups with hard of hearing users.
+- Add Speech to ASL feature.
+- Discord/Google overlay.
+- Send responses in multiple channels inside the bot.
+- Make it accessible for all servers.
+- Possibly creating a text log.
+- Testing it further in groups with hard of hearing users.
 ```
