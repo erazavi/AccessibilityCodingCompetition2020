@@ -27,6 +27,7 @@ Google Cloud Speech-to-Text API.
 Get invited into the Discord server.
 To have the bot listen to you and/or send you transcribed text type: !opt in
 To make the bot stop listening to you and send you transcribed text type: !opt out
+(You will be greeted in sign language).
 ```
 
 # Help:
