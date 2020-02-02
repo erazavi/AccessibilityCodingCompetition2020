@@ -81,6 +81,7 @@ if (msg.content === "!join"){
 
   const connection = await memberVoiceChannel.join()
   currentChannelName = memberVoiceChannel.name;
+  connection.play(new Silence(), { type: 'opus' });
 
   discordClient.channels.get("673003771160166434").send("The FBI has joined the voice channel: " +
                           currentChannelName + " . Please be aware that your voice chat is being recorded for accessibility purposes. ");
@@ -195,6 +196,24 @@ function createEmbedFromUserTranscript(user, transcription){
   return embed;
 }
 
+//Generates an embedded message for when a user leaves or joins a channel
+function createEmbedForChannelUpdate(userId, join){
+  var embed = new Discord.MessageEmbed()
+  .setColor('#0099ff')
+  .setTitle("Channel Status Update")
+  .setFooter('Transcription from #' + currentChannelName)
+  .setTimestamp();
+  if (join === 'join'){
+    embed.setDescription("<@"+userId+"> has `Joined` the voice channel: #"+currentChannelName);
+  }
+  else{
+    embed.setDescription("<@"+userId+"> has `Left` the voice channel: #"+currentChannelName);
+  }
+
+  return embed;
+}
+
+
 //functions that run on the initialization of the bot
 discordClient.on('ready', () => {
   console.log(`Logged in as ${discordClient.user.tag}!`)
@@ -215,5 +234,31 @@ discordClient.on('ready', () => {
 		let channel = discordClient.channels.get(guild.systemChannelID || channelID);
   channel.send("The FBI is here please be aware that voice channels are being recorded for accessibilitly, type `!opt in` to recieve DM transcriptions! ")
 })});
+
+// discordClient.on('voiceStateUpdate', async (oldMember, newMember) => {
+//   let newUserChannel = newMember.channel;
+//   let oldUserChannel = oldMember.channel;
+// 		if((oldUserChannel === undefined && newUserChannel !== undefined) 
+// 		  || (oldUserChannel !== undefined && newUserChannel !== undefined && oldUserChannel !== newUserChannel)){//user joins
+// 			if(newUserChannel===memberVoiceChannel&&newMember.user!==lookatme){
+//         console.log("A new user has entered the fray.");
+//         Object.keys(optin).forEach(u => discordClient.users.get(u).send(createEmbedForChannelUpdate(newMember.id, 'join')).then(msg=>{msg.delete({timeout:deleteTime})}));
+// 				//discordClient.channels.get("673003771160166434").send( "<@"+newMember.id+"> has `Joined` the voice channel: "+newUserChannel.name );
+// 			}
+// 			else if(oldUserChannel===memberVoiceChannel&&newMember.user!==lookatme){
+//         Object.keys(optin).forEach(u => discordClient.users.get(u).send(createEmbedForChannelUpdate(newMember.id, true)).then(msg=>{msg.delete({timeout:deleteTime})}));
+// 				//discordClient.channels.get("673003771160166434").send( "<@"+newMember.id+"> has `Left` the voice channel: "+oldUserChannel.name );
+// 			}
+	
+// 		  }
+// 		else if(newUserChannel === undefined){
+// 			if(oldUserChannel===memberVoiceChannel&&newMember.user!==lookatme){
+//         Object.keys(optin).forEach(u => discordClient.users.get(u).send(createEmbedForChannelUpdate(newMember.id, true)).then(msg=>{msg.delete({timeout:deleteTime})}));
+// 				//discordClient.channels.get("673003771160166434").send( "<@"+newMember.id+"> has `Left` the voice channel: "+oldUserChannel.name );
+// 		}
+	
+// 	}
+// 	}
+// )
 
 discordClient.login(config.discordApiToken)
