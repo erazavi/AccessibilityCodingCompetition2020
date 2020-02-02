@@ -50,7 +50,6 @@ if (newMember.user.id === followingUser){
   }
 }})
 
-
 client.login(auth.token);
 
 
