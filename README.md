@@ -1,6 +1,7 @@
-# AccessibilityCodingCompetition2020 [Created for CSUN Coding Competition 2020.]
+# AccessibilityCodingCompetition2020 
 ```
 Created a Discord bot that transcribes speech from voice channels to text for hard of hearing users. 
+[Created for CSUN Coding Competition 2020]
 ```
 
 # How to use:
