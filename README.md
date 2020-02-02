@@ -1,9 +1,13 @@
-# AccessibilityCodingCompetition2020
-Discord bot to create transcripts of voice channels for hard of hearing users. Created for CSUN Coding Competition 2020.
+# AccessibilityCodingCompetition2020 [Created for CSUN Coding Competition 2020.]
+```
+Created a Discord bot that transcribes speech from voice channels to text for hard of hearing users. 
+```
 
 # How to use:
+```
 To have the bot listen to your channel and send you transcribed text type: !opt in
 To make the bot stop listening to your channel and send you transcribed text type: !opt out
+```
 
 # Objectives of the project:
 ```
