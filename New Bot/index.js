@@ -8,6 +8,8 @@ const { Readable } = require('stream');
 
 const SILENCE_FRAME = Buffer.from([0xF8, 0xFF, 0xFE]);
 
+var optin = {};
+
 class Silence extends Readable {
   _read() {
     this.push(SILENCE_FRAME);
@@ -46,7 +48,7 @@ if (msg.content === "!join"){
   const member = msg.member
   const memberVoiceChannel = member.voice.channel
 
-  if (!memberVoiceChannel) {
+  if (!memberVoiceChannel || discordClient.voice.channel === memberVoiceChannel) {
     return
   }
 
@@ -58,7 +60,7 @@ if (msg.content === "!join"){
       return
     }
 
-    console.log(`I'm listening to ${user.username}`)
+    //npconsole.log(`I'm listening to ${user.username}`)
 
     // this creates a 16-bit signed PCM, stereo 48KHz stream
     const audioStream = receiver.createStream(user, { mode: 'pcm' })
@@ -78,7 +80,8 @@ if (msg.content === "!join"){
           .map(result => result.alternatives[0].transcript)
           .join('\n')
           .toLowerCase()
-        console.log(`Transcription: ${transcription}`)
+        Object.keys(optin).forEach(u => discordClient.users.get(u).send(`${user.username}: ${transcription}`));
+        console.log(`${user.username}: ${transcription}`)
       })
 
     const convertTo1ChannelStream = new ConvertTo1ChannelStream()
@@ -90,6 +93,18 @@ if (msg.content === "!join"){
     })
   })
 }
+else if(msg.content === "!opt in"){
+  optin[msg.author.id] = msg.author.id;
+  msg.channel.send(`User ${msg.author.username} has opted in to received transcriptions from voice channel.`);
+  console.log(optin[msg.author.id]);
+}
+else if(msg.content === "!opt out"){
+  delete optin[msg.author.id]
+  msg.channel.send(`User ${msg.author.username} has opted out of receiving transcriptions from voice channel.`);
+  console.log(optin[msg.author.id]);
+}
+
+
 })
 
 discordClient.on('ready', () => {
