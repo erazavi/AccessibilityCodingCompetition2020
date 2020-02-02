@@ -1,3 +1,4 @@
+//imports
 require('dotenv').config()
 const Discord = require('discord.js')
 const config = require('./config')
@@ -9,13 +10,25 @@ const SILENCE_FRAME = Buffer.from([0xF8, 0xFF, 0xFE]);
 
 
 //global bot variables
+//List of users currently opted in to receive transcripts via DMs.
 var optin = {};
+
+//Name of the voice channel bot is currently in.
 var currentChannelName = '';
+
+//Bot's ID to prevent losing it in certain scopes due to caching errors on Discord's part
 var lookatme = '';
+
+//Has the Google API service been started up?
 var joined = false;
+
+//ID of voice channel the bot is currently in.
 var memberVoiceChannel;
 
+//Time to delete DMed transcript
+var deleteTime = 25000;
 
+//T
 class Silence extends Readable {
   _read() {
     this.push(SILENCE_FRAME);
@@ -48,8 +61,16 @@ class ConvertTo1ChannelStream extends Transform {
 const googleSpeech = require('@google-cloud/speech')
 
 const googleSpeechClient = new googleSpeech.SpeechClient()
-//Command locations
+
+
+//Event listeners
+/*
+* Listens for a message, the content of which is parsed for commands to react to.
+*/
 discordClient.on('message', async (msg) => {
+
+  
+//!join summons the bot into the voice channel that the user who called it in and initiates speech to text
 if (msg.content === "!join"){
   const member = msg.member
   memberVoiceChannel = member.voice.channel;
@@ -60,6 +81,7 @@ if (msg.content === "!join"){
 
   const connection = await memberVoiceChannel.join()
   currentChannelName = memberVoiceChannel.name;
+
   discordClient.channels.get("673003771160166434").send("The FBI has joined the voice channel: " +
                           currentChannelName + " . Please be aware that your voice chat is being recorded for accessibility purposes. ");
                           memberVoiceChannel.members.forEach(member => {
@@ -67,13 +89,16 @@ if (msg.content === "!join"){
                             discordClient.channels.get("673003771160166434").send('<@'+member.id+'>');
                             }
                           });
-                    
+  //this prevents multiple requests per speech snippet to the google API
   if (joined) {
     return;
   }
 
   
   const receiver = connection.receiver
+
+  //due to a restriction on Discords part, a bot cannot receive audio from a call until it plays audio. To circumvent this,
+  //our bot continuously plays a clip of silence.
   connection.play(new Silence(), { type: 'opus' });
   connection.on('speaking', (user, speaking) => {
     if (!speaking || !user) {
@@ -82,6 +107,8 @@ if (msg.content === "!join"){
     joined = true;
     // this creates a 16-bit signed PCM, stereo 48KHz stream
     const audioStream = receiver.createStream(user, { mode: 'pcm' })
+
+    //Configuring stream to pipe data out to the Google API.
     const requestConfig = {
       encoding: 'LINEAR16',
       sampleRateHertz: 48000,
@@ -99,9 +126,10 @@ if (msg.content === "!join"){
           .join('\n')
           .toLowerCase();
 
-
+        //Sets the current channel's name for transcript purposes.
         currentChannelName = connection.channel.name;
-        Object.keys(optin).forEach(u => discordClient.users.get(u).send(createEmbedFromUserTranscript(user, transcription)).then(msg=>{msg.delete({timeout:25000})}));
+        //Goes through the opt in list and sends a private message to each user present containing the transcription.
+        Object.keys(optin).forEach(u => discordClient.users.get(u).send(createEmbedFromUserTranscript(user, transcription)).then(msg=>{msg.delete({timeout:deleteTime})}));
       
         console.log(`${user.username}: ${transcription}`);
 
@@ -123,7 +151,7 @@ else if(msg.content === "!opt in"){     //method to allow dm of transcriptions
   msg.channel.send(`User <@${msg.author.id}> has opted in to receiving transcriptions from the active voice channel.`);
   console.log(optin[msg.author.id]);
 }
-else if(msg.content === "!opt out"){    //method to stop the dm of stranscriptions
+else if(msg.content === "!opt out"){    //method to stop the dm of transcriptions
   delete optin[msg.author.id]
     msg.channel.send("Goodbye", {files: ["./goodbye.gif"]})
   
@@ -137,9 +165,26 @@ else if(msg.content === "!opt out"){    //method to stop the dm of stranscriptio
     !help - DM you my commands`
 		)
 }
+else if(msg.content === "!opt list"){ //retrieve a list of opted in users
+  var optList = 'Currently, the following users are opted in: \n';
+  Object.keys(optin).forEach(u => optList += `${discordClient.users.get(u).username} \n`);
+  msg.channel.send(optList);
+}
+else if(msg.content.split(':')[0] === "!delete time"){ //set time to delete a transcript after sent to an opted in user
+  var time = msg.content.split(':')[1];
+  time = parseInt(time);
+  if (time){
+    msg.channel.send(`<@${msg.author.id}> Time before transcription deletion set to ${time} miliseconds.`);
+    deleteTime = time;
+  }else{
+    msg.channel.send(`<@${msg.author.id}> Invalid input, please provide time as an integer.`);
+  }
+}
+
 
 });
 
+//Generates an embedded message from the transcript and user information
 function createEmbedFromUserTranscript(user, transcription){
   var embed = new Discord.MessageEmbed()
 	.setColor('#0099ff')
@@ -155,6 +200,7 @@ discordClient.on('ready', () => {
   console.log(`Logged in as ${discordClient.user.tag}!`)
   lookatme = discordClient.user;
   discordClient.user.setActivity('!help for commands');
+  //Finds the first channel in the guild to announce the bot coming on-line
   discordClient.guilds.array().forEach(guild =>{
 		let channelID;
 		let channels = guild.channels;
