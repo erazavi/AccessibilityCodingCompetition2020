@@ -18,6 +18,7 @@ Created a Discord bot that transcribes speech from voice channels to text for ha
 
 ## This project utilizes the following resources:
 ```
+- JavaScript.
 - Discord API - Discord.js
 - Google Cloud Speech-to-Text API.
 ```
