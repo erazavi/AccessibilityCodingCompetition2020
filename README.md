@@ -7,8 +7,8 @@ Created a Discord bot that transcribes speech from voice channels to text for ha
 # Objectives of the project:
 ```
 1. Create a bot on Discord and tailor it to our needs.
-2. Have the bot follow users in/out voice channels.
-3. Make the bot listen to different voice channels on Discord server.
+2. Have the bot follow users in/out of different voice channels.
+3. Make the bot listen to different voice channels on a Discord server (Single/Multi-user).
 4. Transcribe speech to text using Artifical Intelligence (Speech Recognition).
 5. Send the transcribed results in a private message to each user using the service.
 6. Self-destruct all messages after 20 seconds of generation for privacy protection.
