@@ -31,5 +31,7 @@ Google Cloud Speech-to-Text API.
 
 # Testing, functionality, and user experience:
 ```
-
+The bot's functionality has been fully tested out with a hard of hearing user.
+The user confirmed functionality and results.
+The user was satisfied with the overall experience.
 ```
