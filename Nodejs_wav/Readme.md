@@ -21,13 +21,6 @@ Install Sox (for .wav file loading):
 brew install sox
 ```
 
-Download test audio files:
-
-```
-wget https://github.com/mozilla/DeepSpeech/releases/download/v0.4.1/audio-0.4.1.tar.gz
-tar xfvz audio-0.4.1.tar.gz
-```
-
 Install NPM dependencies:
 
 ```
@@ -44,7 +37,7 @@ Result should be something like:
 
 ```
 audio length 1.975
-result: experience proves this
+result: this is a test, yes it works
 
 ```
 
