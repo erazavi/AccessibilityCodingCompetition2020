@@ -29,6 +29,7 @@ Created a Discord bot that transcribes speech from voice channels to text for ha
 - To have the bot listen to you and/or send you transcribed text type: !opt in
 - To make the bot stop listening to you and send you transcribed text type: !opt out
 (You will be greeted in sign language).
+- You can use the "!opt in list" command to see all opt in users.
 ```
 
 # Help:
