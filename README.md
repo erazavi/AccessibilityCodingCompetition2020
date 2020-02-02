@@ -28,3 +28,8 @@ To make the bot stop listening to you and send you transcribed text type: !opt o
 Discord API - Discord.js
 Google Cloud Speech-to-Text API.
 ```
+
+# Testing, functionality, and user experience:
+```
+
+```
